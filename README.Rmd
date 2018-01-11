@@ -9,6 +9,10 @@ output:
 
 Code accompanying Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103–114 http://onlinelibrary.wiley.com/doi/10.1002/lom3.10011/full
 
+Currently the BASEmetab package contains just a single user function ````bayesmetab````, which performs the above analysis.
+
+Run ````?bayesmetab```` for details.
+
 
 #Installation
 To install run the following code: 
@@ -29,7 +33,7 @@ To install run the following code:
 
 #Example 
 
- #To be completed
+ See the help file associated with ````bayesmetab````.
 
 
 #Developer

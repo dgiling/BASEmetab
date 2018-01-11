@@ -4,6 +4,10 @@ BASEmetab
 
 Code accompanying Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103–114 <http://onlinelibrary.wiley.com/doi/10.1002/lom3.10011/full>
 
+Currently the BASEmetab package contains just a single user function `bayesmetab`, which performs the above analysis.
+
+Run `?bayesmetab` for details.
+
 Installation
 ============
 
@@ -24,11 +28,9 @@ To install run the following code:
 Example
 =======
 
-\#To be completed
+See the help file associated with `bayesmetab`.
 
 Developer
 =========
 
-Modelling code prepared by Darren Giling <darren.giling@idiv.de>. 
-
-Packaged by Nick Bond <n.bond@latrobe.edu.au>.
+Technical code prepared by Darren Giling <darren.giling@idiv.de> Packaged by Nick Bond <n.bond@latrobe.edu.au>
