@@ -29,4 +29,6 @@ Example
 Developer
 =========
 
-Technical code prepared by Darren Giling <darren.giling@idiv.de> Packaged by Nick Bond <n.bond@latrobe.edu.au>
+Modelling code prepared by Darren Giling <darren.giling@idiv.de>. 
+
+Packaged by Nick Bond <n.bond@latrobe.edu.au>.
