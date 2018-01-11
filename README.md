@@ -12,7 +12,7 @@ To install run the following code:
       # install devtools package
       install.packages(c("devtools"))
 
-      # install catchstats package
+      # install BASEmetab package
         devtools::install_github("nickbond/BASEmetab")
 
         # Remove the package zip after installation
@@ -29,4 +29,4 @@ Example
 Developer
 =========
 
-Nick Bond <n.bond@latrobe.edu.au>
+Technical code prepared by Darren Giling <darren.giling@idiv.de> Packaged by Nick Bond <n.bond@latrobe.edu.au>

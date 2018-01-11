@@ -33,7 +33,8 @@ To install run the following code:
 
 
 #Developer
-Nick Bond n.bond@latrobe.edu.au
+Technical code prepared by Darren Giling <darren.giling@idiv.de>
+Packaged by Nick Bond <n.bond@latrobe.edu.au>
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
