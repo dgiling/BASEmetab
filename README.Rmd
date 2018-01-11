@@ -17,7 +17,7 @@ To install run the following code:
   # install devtools package
   install.packages(c("devtools"))
 
-  # install catchstats package
+  # install BASEmetab package
 	devtools::install_github("nickbond/BASEmetab")
 
 	# Remove the package zip after installation
