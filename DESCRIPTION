@@ -1,0 +1,17 @@
+Package: BASEmetab
+Type: Package
+Title: Estimate Single-station Whole-stream Metabolic Rates from Diel Dissolved Oxygen (DO) Curves
+Version: 2.3.2
+Author: Darren Giling and Nick Bond
+Maintainer: Darren Giling <darren.giling@idiv.de>
+Description: Estimate Single-station Whole-stream Metabolic Rates from Diel Dissolved Oxygen (DO) Curves. See Grace et al. (2015) for more details. NOTE: JAGS must be installed prior to use for the package to work.
+License: Creative Commons Attribution 3.0 License.
+Encoding: UTF-8
+LazyData: true
+Imports: coda,
+    zoo,
+    R2jags
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
