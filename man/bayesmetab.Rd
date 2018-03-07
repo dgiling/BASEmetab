@@ -21,13 +21,25 @@ bayesmetab(data.dir, results.dir, interval, n.iter = 20000,
 
 \item{n.burnin}{Integer. Number of iterations of MCMC chains to delete}
 
-\item{K.init}{Numeric. initial value of chains for K (/day). Default value = 2}
+\item{K.init}{Numeric. Initial value of chains for K (/day). Reasonable estimate aids convergence. (default value = 2)}
 
-\item{smooth.DO}{Numeric. Proportion of high-frequency fluctuations to filter with fast Fourier transform.}
+\item{smooth.DO}{Numeric. Proportion of high-frequency fluctuations to filter with fast Fourier transform (default = 0)}
 
-\item{smooth.PAR}{Logical. Should PAR be smoothed with a moving average? (default = TRUE)}
+\item{smooth.PAR}{Logical. Should PAR be smoothed with a moving average? (default = FALSE)}
 
-\item{instant}{Logical. Should a table of instantaneous rates be written (default = TRUE)?}
+\item{instant}{Logical. Should a table of instantaneous rates be written? (default = TRUE)}
+
+\item{update.chains}{Logical. Should the chains automatically update once if not converged? (default = TRUE)}
+
+\item{K.est}{Logical. Should K be estimated with uninformative priors? (default = TRUE)}
+
+\item{K.meas.mean}{Numeric. Mean for informed normal prior distribution when K.est = FALSE}
+
+\item{K.meas.sd}{Numeric. Standard deviation for informed normal prior distribution when K.est = FALSE}
+
+\item{p.est}{Logical. Should p be estimated? (default = FALSE)}
+
+\item{theta.est}{Logical. Should theta be estimated? (default = FALSE)}
 }
 \value{
 A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit (see Vignette for details).

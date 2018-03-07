@@ -44,6 +44,7 @@
 #'
 #' @export
 #' @import R2jags
+#' @import coda
 
 bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n.iter*0.5, K.init = 2, 
                       smooth.DO=0, smooth.PAR=FALSE, instant=TRUE, update.chains = TRUE,
