@@ -17,7 +17,7 @@ To install run the following code:
       install.packages(c("devtools"))
 
       # install BASEmetab package
-        devtools::install_github("nickbond/BASEmetab")
+        devtools::install_github("dgiling/BASEmetab")
 
         # Remove the package zip after installation
         unlink("BASEmetab.zip")
