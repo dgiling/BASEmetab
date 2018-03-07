@@ -45,10 +45,13 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
   {
   start.time<-NULL; start.time<-Sys.time()
   
-  # Other functions
+  # model file
+  model.dir <- system.file("tools", package = "BASEmetab")
+  
+  # define functions
   smooth5 <- function(x) (rollapply(x, 5, mean, na.rm=T,align="center"))  # moving average of 5 time intervals
   
-  # Data input and set up output table dataframes
+  # data input and set up output table dataframes
   filenames<-list.files(file.path(data.dir))  
   
   # Set up output tables
@@ -158,7 +161,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       # (inspect the main parameters for convergence using bgr diagrams, history, density and autocorrelation)
       metabfit=NULL
       metabfit <- do.call(jags.parallel,
-                          list(data=data.list, inits=inits, parameters.to.save=params, model.file = temp,
+                          list(data=data.list, inits=inits, parameters.to.save=params, model.file = file.path(system.file(package="BASEmetab"), "BASE_metab_model_v2.3.txt"),
                                n.chains = n.chains, n.iter = n.iter, n.burnin = n.burnin,
                                n.thin = n.thin, n.cluster= n.chains, DIC = TRUE,
                                jags.seed = 123, digits=5))
