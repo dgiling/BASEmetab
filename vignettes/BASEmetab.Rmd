@@ -2,7 +2,7 @@
 title: "Package 'BASEmetab'"
 author: "Darren Giling, Ralph Mac Nally, Nick Bond, Michael Grace"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{Package 'BASEmetab'}
   %\VignetteEngine{knitr::rmarkdown}
