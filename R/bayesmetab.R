@@ -8,6 +8,7 @@
 #' @param n.iter 		Integer. Number of MCMC iterations (default = 20000)
 #' @param n.burnin 	Integer. Number of iterations of MCMC chains to delete
 #' @param update.chains 	Logical. Should the chains automatically update once if not converged? (default = TRUE)
+#' @param extra.iter Numeric. Number of extra iterations to run if chains are not converged, as multiple of n.iter (default = 1 times)
 #' @param smooth.DO 	Numeric. Proportion of high-frequency fluctuations to filter with fast Fourier transform (default = 0)
 #' @param smooth.PAR 	Logical. Should PAR be smoothed with a moving average? (default = FALSE)
 #' @param K.init 	Numeric. Initial value of chains for K (/day). Reasonable estimate aids convergence. (default value = 2)
@@ -16,9 +17,9 @@
 #' @param K.meas.sd 	Numeric. Standard deviation for informed normal prior distribution when K.est = FALSE
 #' @param p.est	Logical. Should p be estimated? (default = FALSE)
 #' @param theta.est	Logical. Should theta be estimated? (default = FALSE)
-#' @param instant 		Logical. Should a table of instantaneous rates be written? (default = TRUE)
+#' @param instant 		Logical. Should a table of instantaneous rates be written? (default = FALSE)
 #'
-#' @return A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit (see Vignette for details).
+#' @return A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit, plots of model fit (see Vignette for details).
 #'
 #'@references Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103-114.
 #'
@@ -49,7 +50,7 @@
 #' @import R2jags
 
 bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n.iter*0.5, K.init = 2, 
-                      smooth.DO=0, smooth.PAR=FALSE, instant=TRUE, update.chains = TRUE,
+                      smooth.DO=0, smooth.PAR=FALSE, instant=FALSE, update.chains = TRUE, extra.iter=1,
                       K.est = TRUE, K.meas.mean = 0, K.meas.sd = 4, p.est=FALSE, theta.est=FALSE) 
   {
   start.time<-NULL; start.time<-Sys.time()
@@ -88,7 +89,6 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
     
     ## Smoothing data
     if(smooth.DO > 0) {
-      
       # fast Fourier transform smoothing - low pass filter
       DO.fft = fft(data$DO.meas)
       inx_filter = floor(N/2*(1-smooth.DO))
@@ -170,7 +170,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       if(update.chains == TRUE) {
         if(Rhat.test == "Check convergence") {
           recompile(metabfit)
-          metabfit <- update(metabfit, n.iter=n.iter*10) 
+          metabfit <- update(metabfit, n.iter=n.iter*extra.iter) 
           
           # Rhat (srf) test - second round in case metabfit is updated
           srf<- metabfit$BUGSoutput$summary[,8]
@@ -230,21 +230,22 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       # diagnostic multi-panel plot
       jpeg(file=file.path(results.dir, paste0(substr(fname, 1,(nchar(fname)-4)),"_", as.character(d), ".jpg")), width=1200, height=1200, pointsize=30, quality=300)
       
-      traceplot(metabfit, varname=c('A','p','R','K.day','theta'), ask=FALSE, mfrow=c(3,3), mar=c(2,2,0,8), new=FALSE)
+      par(mfrow=c(3,3), mar=c(3,4,2,1), oma=c(0.1,0.1,0.1,0.1))
+      traceplot(metabfit, varname=c('A','p','R','K.day','theta'), ask=FALSE, mfrow=c(3,3), new=FALSE)
       
-      plot(1:num.measurements,data.sub$DO.meas, type="p",pch=21, col="grey60",cex=1.25, ylim=c(min(DO.mod.means-DO.mod.sd)-0.5,max(DO.mod.means+DO.mod.sd)+0.5), xlab="Timestep", ylab="DO mg/L")
+      plot(1:num.measurements,data.sub$DO.meas, type="p",pch=21, col="grey60",cex=0.8, ylim=c(min(DO.mod.means-DO.mod.sd)-0.5,max(DO.mod.means+DO.mod.sd)+0.5), xlab="Timestep", ylab="DO mg/L")
       points(1:num.measurements,data.sub$DO.smooth,type='l',lwd=2,xlab="Timestep", col="red", cex=0.75)  
       points(1:num.measurements,DO.mod.means,lwd=1.5, type="l", xlab="Timestep", col="black")  
       points(1:num.measurements,DO.mod.means+DO.mod.sd, type="l", lty=2)
       points(1:num.measurements,DO.mod.means-DO.mod.sd, type="l", lty=2)
-      legend(x="topleft", legend=c("DO meas", "DO smooth", "DO modelled"), pch=c(1,NA,NA), lty=c(NA,1,1), col=c("grey60","red", "black"), cex=1, bty='n')
+      legend(x="topleft", legend=c("DO meas", "DO smooth", "DO modelled"), pch=c(1,NA,NA), lty=c(NA,1,1), col=c("grey60","red", "black"), cex=0.75, bty='n')
       
       plot(1:num.measurements,tempC,pch=1,xlab="Timestep" , typ='p', col="grey60")
-      legend(x="topleft", legend=c("TempC meas"), pch=c(1), col=c("grey60"), cex=1, bty='n')
+      legend(x="topleft", legend=c("TempC meas"), pch=c(1), col=c("grey60"), cex=0.75, bty='n')
       
       plot(1:num.measurements,data.sub$I,pch=1,xlab="Timestep" , typ='p', col="grey60", ylab='PAR')
       points(1:num.measurements,data.sub$I.smooth,type='l',lwd=2,xlab="Timestep", col="red", cex=0.75)  
-      legend(x="topleft", legend=c("PAR meas", "PAR smooth"), pch=c(1,NA), lty=c(NA,1), col=c("grey60","red"), cex=1, bty='n')
+      legend(x="topleft", legend=c("PAR meas", "PAR smooth"), pch=c(1,NA), lty=c(NA,1), col=c("grey60","red"), cex=0.75, bty='n')
       
       graphics.off()
       

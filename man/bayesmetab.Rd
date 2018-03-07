@@ -6,9 +6,9 @@
 \usage{
 bayesmetab(data.dir, results.dir, interval, n.iter = 20000,
   n.burnin = n.iter * 0.5, K.init = 2, smooth.DO = 0,
-  smooth.PAR = FALSE, instant = TRUE, update.chains = TRUE,
-  K.est = TRUE, K.meas.mean = 0, K.meas.sd = 4, p.est = FALSE,
-  theta.est = FALSE)
+  smooth.PAR = FALSE, instant = FALSE, update.chains = TRUE,
+  extra.iter = 1, K.est = TRUE, K.meas.mean = 0, K.meas.sd = 4,
+  p.est = FALSE, theta.est = FALSE)
 }
 \arguments{
 \item{data.dir}{relative or absolute path to the folder containing csv input data files to be read.}
@@ -27,9 +27,11 @@ bayesmetab(data.dir, results.dir, interval, n.iter = 20000,
 
 \item{smooth.PAR}{Logical. Should PAR be smoothed with a moving average? (default = FALSE)}
 
-\item{instant}{Logical. Should a table of instantaneous rates be written? (default = TRUE)}
+\item{instant}{Logical. Should a table of instantaneous rates be written? (default = FALSE)}
 
 \item{update.chains}{Logical. Should the chains automatically update once if not converged? (default = TRUE)}
+
+\item{extra.iter}{Numeric. Number of extra iterations to run if chains are not converged, as multiple of n.iter (default = 1 times)}
 
 \item{K.est}{Logical. Should K be estimated with uninformative priors? (default = TRUE)}
 
@@ -42,17 +44,20 @@ bayesmetab(data.dir, results.dir, interval, n.iter = 20000,
 \item{theta.est}{Logical. Should theta be estimated? (default = FALSE)}
 }
 \value{
-A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit (see Vignette for details).
+A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit, plots of model fit (see Vignette for details).
 }
 \description{
 Estimates single-station whole-stream metabolic rates from diel dissolved oxygen (DO) curves (see Grace et al. 2015).
 }
 \examples{
 
+##Link to JAGS
+library(R2jags)
+
 ##View example data set.
 #set path to example data.
 data.dir <- system.file("extdata", package = "BASEmetab")
-ex.data <- read.csv(file.path(data.dir, "Yallakool_example_2011-12-02.csv"))
+ex.data <- read.csv(file.path(data.dir, "Yallakool_example.csv"))
 head(ex.data)
 tail(ex.data)
 
@@ -68,7 +73,7 @@ results <- bayesmetab(data.dir, results.dir, interval=600)
 
 }
 \references{
-Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103–114.
+Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103-114.
 }
 \author{
 Darren Giling, Ralph Mac Nally
