@@ -12,7 +12,7 @@
 #' @param smooth.PAR Logical. Should PAR be smoothed with a moving average? (default = TRUE)
 #' @param instant Logical. Should a table of instantaneous rates be written (default = TRUE)?
 #'
-#' @return A csv file of parameter estimates (mean, SD) and checks of model fit (see Vignette for details).
+#' @return A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit (see Vignette for details).
 #'
 #'@references Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103–114.
 #'
@@ -136,6 +136,8 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       # Different random seeds
       kern=as.integer(runif(1000,min=1,max=10000))
       iters=sample(kern,1)
+      
+      # Set 
       n.chains <- 3
       n.thin <- 10
       p.est.n <- as.numeric(p.est)
@@ -150,12 +152,6 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       params=c("A","R","K","K.day","p","theta","tau","ER","GPP", "NEP","sum.obs.resid","sum.ppa.resid","PPfit","DO.modelled")
       
       ## Call jags ##
-      
-      # write temporary file for JAGS model
-      temp=tempfile()
-      temp2=file(temp, "w")
-      cat(metab.model,file=temp2)
-      close(temp2)
       
       # Set debug = T below to inspect each file for model convergence 
       # (inspect the main parameters for convergence using bgr diagrams, history, density and autocorrelation)
@@ -178,7 +174,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       if(update.chains == TRUE) {
         if(Rhat.test == "Check convergence") {
           recompile(metabfit)
-          metabfit <- update(metabfit, n.iter=n.iter) 
+          metabfit <- update(metabfit, n.iter=n.iter*10) 
           
           # Rhat (srf) test - second round in case metabfit is updated
           srf<- metabfit$BUGSoutput$summary[,8]
