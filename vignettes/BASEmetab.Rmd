@@ -42,7 +42,7 @@ yallakool (dataset)
 
 **Details:** The main function of the BASEmetab package is bayesmetab. This function implements the daytime regression model of Grace et al. (2015) for dissolved oxygen (DO) time series. See Grace et al. (2015) for a background to the subject and a full description of the model, but note the subsequent revisions to the model that are detailed below in 'Updates'. Grace and Imberger (2006) provide a guide to the practical aspects of measuring diel dissolved oxygen and PAR data in streams and rivers, including recommendations on probe drift that must be corrected prior to estimating metabolic rates.
 
-The parameter estimation is performed with the JAGS software, which must be separately installed (Plummer 2003; http://mcmc-jags.sourceforge.net/). The model does not require experience with JAGS, but familiarity with metrics of MCMC chain convergence is recommended (see e.g. McCarthy 2007; Kéry 2010).
+The parameter estimation is performed with the JAGS software, which must be separately installed (Plummer 2003; http://mcmc-jags.sourceforge.net/). The model does not require experience with JAGS, but familiarity with metrics of MCMC chain convergence is recommended (see e.g. McCarthy 2007).
 
 \
 
@@ -89,15 +89,15 @@ These updates improved agreement of GPP and ER estimates (but not K) between the
 
 Table 1. Correlations between metabolic estimates made with BaMM (Holtgrieve et al. 2010) and the BASE raw code v1.0 and v2.0. Data are estimates from the validation dataset of Grace et al. 2015 with measurement intervals of 5 and 10 minutes, which cover a wide range of stream characteristics. The model is the default three-parameter estimation (p and $\theta$ are fixed).
 
-|Model parameterization                      | Parameter |	Coefficient	| R^2^	| n   |
+|Model parameterization                      | Parameter |	Coefficient (mean $\pm$ SD)	| R^2^	| n   |
 |:-------------------------------------------|:----------|:-------------|:----|:----|
-|Grace et al. 2015 (raw code v1.0)           |GPP	       |0.76 ± 0.06	  |0.85	|27   |
-|	                                           |ER	       |1.03 ± 0.09	  |0.84	|27   |
-|                                            |K	         |0.88 ± 0.10	  |0.77	|27   |
+|Grace et al. 2015 (raw code v1.0)           |GPP	       |0.76 $\pm$ 0.06   |0.85	|27   |
+|	                                           |ER	       |1.03 $\pm$ 0.09	  |0.84	|27   |
+|                                            |K	         |0.88 $\pm$ 0.10	  |0.77	|27   |
 |                                            |           |              |     |     |
-|Updated model  (raw code v2.0, package)     |GPP	       |0.82 ± 0.05	  |0.89	|31   |
-|                                            |ER	       |1.08 ± 0.07	  |0.90	|31   |
-|                                            |K	         |0.77 ± 0.10	  |0.64	|31   |
+|Updated model  (raw code v2.0, package)     |GPP	       |0.82 $\pm$ 0.05	  |0.89	|31   |
+|                                            |ER	       |1.08 $\pm$ 0.07	  |0.90	|31   |
+|                                            |K	         |0.77 $\pm$ 0.10	  |0.64	|31   |
 
 
 In addition to this major update, minor changes have been made to the initial values and prior distributions of some of the parameters in the model to aid convergence in a wide range of stream and river systems. These include:
@@ -121,15 +121,13 @@ Hanson, P. C., S. R. Carpenter, N. Kimura, C. Wu, S. P. Cornelius, and T. K. Kra
 
 Holtgrieve, G. W., D. E. Schindler, T. A. Branch, and Z. T. A'mar. 2010. Simultaneous quantification of aquatic ecosystem metabolism and reaeration using a Bayesian statistical model of oxygen dynamics. Limnol Oceanogr 55: 1047-1063.
 
-Kéry, M. 2010. Introduction to WinBUGS for Ecologists: A Bayesian Approach to Regression, ANOVA and Related Analyses. Academic Press.
-
 Lunn, D. J., A. Thomas, N. Best, and D. Spiegelhalter. 2000. WinBUGS - a Bayesian modelling framework: concepts, structure, and extensibility. Statistics and Computing 10: 325-337.
 
 McCarthy, M. A. 2007. Bayesian Methods for Ecology. Cambridge University Press.
 
 Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003).
 
-Song, C., W. K. Dodds, M. T. Trentman, J. Rüegg, and F. Ballantyne. 2016. Methods of approximation influence aquatic ecosystem metabolism estimates. Limnol. Oceanogr. Methods 14: 557-569.
+Song, C., W. K. Dodds, M. T. Trentman, J. Ruegg, and F. Ballantyne. 2016. Methods of approximation influence aquatic ecosystem metabolism estimates. Limnol. Oceanogr. Methods 14: 557-569.
 
 Van de Bogert, M. C., S. R. Carpenter, J. J. Cole, and M. L. Pace. 2007. Assessing pelagic and benthic metabolism using free water measurements. Limnol. Oceanogr. Methods 5: 145-155.
 
