@@ -233,7 +233,7 @@ A set  of plots  for each diel cycle is also written as a jpg to the results.dir
 ##View example data set
 #set path to example data.
 data.dir <- system.file("extdata", package = "BASEmetab")
-ex.data <- read.csv(file.path(data.dir, "Yallakool_example_2011-12-02.csv"))
+ex.data <- read.csv(file.path(data.dir, "Yallakool_example.csv"))
 head(ex.data)
 tail(ex.data)
 

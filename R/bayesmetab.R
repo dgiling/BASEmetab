@@ -234,7 +234,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       traceplot(metabfit, varname=c('A','p','R','K.day','theta'), ask=FALSE, mfrow=c(3,3), new=FALSE)
       
       plot(1:num.measurements,data.sub$DO.meas, type="p",pch=21, col="grey60",cex=0.8, ylim=c(min(DO.mod.means-DO.mod.sd)-0.5,max(DO.mod.means+DO.mod.sd)+0.5), xlab="Timestep", ylab="DO mg/L")
-      points(1:num.measurements,data.sub$DO.smooth,type='l',lwd=2,xlab="Timestep", col="red", cex=0.75)  
+      if(smooth.DO > 0) { points(1:num.measurements,data.sub$DO.smooth,type='l',lwd=2,xlab="Timestep", col="red", cex=0.75)  }
       points(1:num.measurements,DO.mod.means,lwd=1.5, type="l", xlab="Timestep", col="black")  
       points(1:num.measurements,DO.mod.means+DO.mod.sd, type="l", lty=2)
       points(1:num.measurements,DO.mod.means-DO.mod.sd, type="l", lty=2)
@@ -244,7 +244,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       legend(x="topleft", legend=c("TempC meas"), pch=c(1), col=c("grey60"), cex=0.75, bty='n')
       
       plot(1:num.measurements,data.sub$I,pch=1,xlab="Timestep" , typ='p', col="grey60", ylab='PAR')
-      points(1:num.measurements,data.sub$I.smooth,type='l',lwd=2,xlab="Timestep", col="red", cex=0.75)  
+      if(smooth.PAR==TRUE) { points(1:num.measurements,data.sub$I.smooth,type='l',lwd=2,xlab="Timestep", col="red", cex=0.75)  }
       legend(x="topleft", legend=c("PAR meas", "PAR smooth"), pch=c(1,NA), lty=c(NA,1), col=c("grey60","red"), cex=0.75, bty='n')
       
       graphics.off()
