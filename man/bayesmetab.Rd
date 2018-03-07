@@ -6,7 +6,9 @@
 \usage{
 bayesmetab(data.dir, results.dir, interval, n.iter = 20000,
   n.burnin = n.iter * 0.5, K.init = 2, smooth.DO = 0,
-  smooth.PAR = FALSE, instant = TRUE)
+  smooth.PAR = FALSE, instant = TRUE, update.chains = TRUE,
+  K.est = TRUE, K.meas.mean = 0, K.meas.sd = 4, p.est = FALSE,
+  theta.est = FALSE)
 }
 \arguments{
 \item{data.dir}{relative or absolute path to the folder containing csv input data files to be read.}
@@ -28,7 +30,7 @@ bayesmetab(data.dir, results.dir, interval, n.iter = 20000,
 \item{instant}{Logical. Should a table of instantaneous rates be written (default = TRUE)?}
 }
 \value{
-A csv file of parameter estimates (mean, SD) and checks of model fit (see Vignette for details).
+A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit (see Vignette for details).
 }
 \description{
 Estimates single-station whole-stream metabolic rates from diel dissolved oxygen (DO) curves (see Grace et al. 2015).
@@ -57,5 +59,5 @@ results <- bayesmetab(data.dir, results.dir, interval=600)
 Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103–114.
 }
 \author{
-Darren Giling?
+Darren Giling, Ralph Mac Nally
 }

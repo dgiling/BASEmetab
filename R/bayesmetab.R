@@ -37,7 +37,7 @@
 #' results <- bayesmetab(data.dir, results.dir, interval=600)
 #'
 #' @export
-
+#' @import R2jags
 
 bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n.iter*0.5, K.init = 2, 
                       smooth.DO=0, smooth.PAR=FALSE, instant=TRUE, update.chains = TRUE,
@@ -49,7 +49,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
   model.dir <- system.file("tools", package = "BASEmetab")
   
   # define functions
-  smooth5 <- function(x) (rollapply(x, 5, mean, na.rm=T,align="center"))  # moving average of 5 time intervals
+  smooth5 <- function(x) (zoo::rollapply(x, 5, mean, na.rm=T,align="center"))  # moving average of 5 time intervals
   
   # data input and set up output table dataframes
   filenames<-list.files(file.path(data.dir))  
@@ -67,6 +67,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
   
   # Analyse files sequentially
   for (fname in filenames) {
+    #fname <- filenames[1]
     
     data<-read.csv(file.path(data.dir,fname), head=T) # read next file
     seconds<-86400
@@ -118,6 +119,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
     ## Analyse days sequentially
     for (d in dates) 
     { 
+      #d <- dates[2]
       data.sub <- data[data$Date == d,]
       
       # Define data vectors
@@ -184,7 +186,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       }
       
       # autocorr test
-      metabfit.mcmc<-as.mcmc(metabfit)
+      metabfit.mcmc<-coda::as.mcmc(metabfit)
       ac.lag1 <- autocorr.diag(metabfit.mcmc, lags = 1)
       auto.corr.test <- NULL
       auto.corr.test <- ifelse(any(abs(ac.lag1)>0.1, na.rm=T)==TRUE,"Check ac", "ac OK")
