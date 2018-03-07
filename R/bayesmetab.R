@@ -2,15 +2,21 @@
 #'
 #' Estimates single-station whole-stream metabolic rates from diel dissolved oxygen (DO) curves (see Grace et al. 2015).
 #'
-#' @param data.dir relative or absolute path to the folder containing csv input data files to be read.
-#' @param results.dir relative or absolute path to the output folder where results (plots and tables) will be written.
-#' @param interval Integer. The time interval in seconds (e.g. 10 minutes = 600 seconds)
-#' @param n.iter Integer. Number of MCMC iterations (default = 20000)
-#' @param n.burnin Integer. Number of iterations of MCMC chains to delete
-#' @param K.init Numeric. initial value of chains for K (/day). Default value = 2
-#' @param smooth.DO Numeric. Proportion of high-frequency fluctuations to filter with fast Fourier transform.
-#' @param smooth.PAR Logical. Should PAR be smoothed with a moving average? (default = TRUE)
-#' @param instant Logical. Should a table of instantaneous rates be written (default = TRUE)?
+#' @param data.dir 	relative or absolute path to the folder containing csv input data files to be read.
+#' @param results.dir 	relative or absolute path to the output folder where results (plots and tables) will be written.
+#' @param interval 	Integer. The time interval in seconds (e.g. 10 minutes = 600 seconds)
+#' @param n.iter 		Integer. Number of MCMC iterations (default = 20000)
+#' @param n.burnin 	Integer. Number of iterations of MCMC chains to delete
+#' @param update.chains 	Logical. Should the chains automatically update once if not converged? (default = TRUE)
+#' @param smooth.DO 	Numeric. Proportion of high-frequency fluctuations to filter with fast Fourier transform (default = 0)
+#' @param smooth.PAR 	Logical. Should PAR be smoothed with a moving average? (default = FALSE)
+#' @param K.init 	Numeric. Initial value of chains for K (/day). Reasonable estimate aids convergence. (default value = 2)
+#' @param K.est 		Logical. Should K be estimated with uninformative priors? (default = TRUE)
+#' @param K.meas.mean 	Numeric. Mean for informed normal prior distribution when K.est = FALSE
+#' @param K.meas.sd 	Numeric. Standard deviation for informed normal prior distribution when K.est = FALSE
+#' @param p.est	Logical. Should p be estimated? (default = FALSE)
+#' @param theta.est	Logical. Should theta be estimated? (default = FALSE)
+#' @param instant 		Logical. Should a table of instantaneous rates be written? (default = TRUE)
 #'
 #' @return A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit (see Vignette for details).
 #'
