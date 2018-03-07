@@ -24,6 +24,9 @@ To install run the following code:
         
         #load library
         library(BASEmetab)
+        
+        #load R2jags to connect to JAGS
+        library(R2jags)
 
 Example
 =======
