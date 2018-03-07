@@ -20,15 +20,18 @@
 #'
 #' @return A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit (see Vignette for details).
 #'
-#'@references Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103–114.
+#'@references Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103-114.
 #'
 #' @author Darren Giling, Ralph Mac Nally
 #' @examples
 #'
+#' ##Link to JAGS
+#' library(R2jags)
+#' 
 #' ##View example data set.
 #' #set path to example data.
 #' data.dir <- system.file("extdata", package = "BASEmetab")
-#' ex.data <- read.csv(file.path(data.dir, "Yallakool_example_2011-12-02.csv"))
+#' ex.data <- read.csv(file.path(data.dir, "Yallakool_example.csv"))
 #' head(ex.data)
 #' tail(ex.data)
 #'
@@ -44,7 +47,6 @@
 #'
 #' @export
 #' @import R2jags
-#' @import coda
 
 bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n.iter*0.5, K.init = 2, 
                       smooth.DO=0, smooth.PAR=FALSE, instant=TRUE, update.chains = TRUE,
@@ -66,7 +68,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
   output.table<-data.frame(File=character(), Date=character(), GPP.mean=double(), GPP.sd=double(), ER.mean=double(), ER.sd=double(), 
                            K.mean=double(), K.sd=double(), theta.mean=double(), theta.sd=double(), A.mean=double(), A.sd=double(), p.mean=double(), p.sd=double(), 
                            R2=double(), PPP=double(), rmse=double(), rmse.relative=double(), mrl.fraction=double(), ER.K.cor=double(), convergence.check=double(), A.Rhat=double(),
-                           K.Rhat=double(), theta.Rhat=double(), p.Rhat=double(), R.Rhat=double(), GPP.Rhat=double(), DIC=double(), pD=double(), smooth.DO=double(),
+                           K.Rhat=double(), theta.Rhat=double(), p.Rhat=double(), R.Rhat=double(), GPP.Rhat=double(), DIC=double(), pD=double(), 
                            stringsAsFactors=FALSE)
   instant.rates<-data.frame(File=character(), Date=character(), interval=integer(), 
                             tempC=double(), I=double(), K.instant=double(), GPP.instant=double(), ER.instant=double(),
@@ -80,9 +82,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
     seconds<-86400
     N = nrow(data)
     x = 0:(N-1)
-    plot.days <- 2    # number of consecutive days to show for the smoothing plot
-    limit <- (seconds/interval) * plot.days
-    
+
     # check dates for "/" and replace with "-"
     data$Date <- gsub("/", "-", data$Date)
     
@@ -97,24 +97,10 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       DO.fft_filtered = filter * DO.fft
       data$DO.smooth <- Re( fft( DO.fft_filtered, inverse=TRUE) / N )
       noise <- data$DO.meas - data$DO.smooth
-      
-      jpeg(file=file.path(results.dir, paste0(fname, "_DO_smoothing.jpg")), width=1200, height=600, pointsize=20, quality=400)
-      plot(data$DO.meas[1:limit], typ='l', col='grey', ylab="DO concentration", xlab="Timesteps", lwd=4)
-      points(noise[1:limit]+mean(data$DO.meas[1:limit]), typ='l', col="blue", lwd=2)
-      points(data$DO.smooth[1:limit] , typ='l', col="red", lwd=2)
-      legend("topleft", legend=c("Measured", "FFT smooth", "High-frequency noise (centered)"), col=c("grey", "red", "blue"), lwd=c(3,2,2), bty='n')
-      graphics.off()
     }
     
     if(smooth.PAR == T) {
       data$I.smooth<-c(data$I[1:2],smooth5(data$I),data$I[nrow(data)-1],data$I[nrow(data)]) # moving average over 5 time intervals
-      
-      jpeg(file=file.path(results.dir, paste0(fname, "_PAR_smoothing.jpg")), width=1200, height=600, pointsize=20, quality=400)
-      plot(data$I[1:limit], typ='l', col='grey', ylab="DO concentration", xlab="Timesteps", lwd=4)
-      points(data$I.smooth[1:limit] , typ='l', col="red", lwd=2)
-      legend("topleft", legend=c("Measured", "Smoothed"), col=c("grey", "red"), lwd=c(3,2), bty='n')
-      graphics.off()
-      
     }
     
     # Select dates
@@ -164,8 +150,9 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       
       # Set debug = T below to inspect each file for model convergence 
       # (inspect the main parameters for convergence using bgr diagrams, history, density and autocorrelation)
+      # n.iter=1000; n.burnin=500
       metabfit=NULL
-      metabfit <- do.call(jags.parallel,
+      metabfit <- do.call(R2jags::jags.parallel,
                           list(data=data.list, inits=inits, parameters.to.save=params, model.file = file.path(system.file(package="BASEmetab"), "BASE_metab_model_v2.3.txt"),
                                n.chains = n.chains, n.iter = n.iter, n.burnin = n.burnin,
                                n.thin = n.thin, n.cluster= n.chains, DIC = TRUE,
@@ -223,7 +210,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       result <- data.frame(File=as.character(fname), Date=as.character(d), metabfit$BUGSoutput$mean$GPP, metabfit$BUGSoutput$sd$GPP, metabfit$BUGSoutput$mean$ER, metabfit$BUGSoutput$sd$ER, metabfit$BUGSoutput$mean$K.day, 
                            metabfit$BUGSoutput$sd$K.day,  metabfit$BUGSoutput$mean$theta, metabfit$BUGSoutput$sd$theta, metabfit$BUGSoutput$mean$A, metabfit$BUGSoutput$sd$A, metabfit$BUGSoutput$mean$p, metabfit$BUGSoutput$sd$p, 
                            R2, PPP, rmse, rmse.relative, mrl.fraction, ER.K.cor, Rhat.test, metabfit$BUGSoutput$summary["A",8] , metabfit$BUGSoutput$summary["K",8], 
-                           metabfit$BUGSoutput$summary["theta",8], metabfit$BUGSoutput$summary["p",8], metabfit$BUGSoutput$summary["R",8], metabfit$BUGSoutput$summary["GPP",8],  DIC, pD, smooth.DO,
+                           metabfit$BUGSoutput$summary["theta",8], metabfit$BUGSoutput$summary["p",8], metabfit$BUGSoutput$summary["R",8], metabfit$BUGSoutput$summary["GPP",8],  DIC, pD,
                            stringsAsFactors = FALSE)
       output.table[nrow(output.table)+1,] <- result
       write.csv(output.table, file=file.path(results.dir, "BASE_results.csv")) # output file overwritten at each iteration
@@ -241,18 +228,23 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       }
       
       # diagnostic multi-panel plot
-      jpeg(file=file.path(results.dir, paste0(substr(fname, 1,(nchar(fname)-4)),"_", as.character(d), ".jpg")), width=1200, height=1200, pointsize=30, quality=250)
+      jpeg(file=file.path(results.dir, paste0(substr(fname, 1,(nchar(fname)-4)),"_", as.character(d), ".jpg")), width=1200, height=1200, pointsize=30, quality=300)
       
       traceplot(metabfit, varname=c('A','p','R','K.day','theta'), ask=FALSE, mfrow=c(3,3), mar=c(2,2,0,8), new=FALSE)
       
-      plot(1:num.measurements,DO.mod.means, type="l",lwd=2, ylim=c(min(DO.mod.means-DO.mod.sd)-0.5,max(DO.mod.means+DO.mod.sd)+0.5), xlab="Timestep")
-      points(1:num.measurements,DO.meas,pch=1,xlab="Timestep", col="grey60", cex=0.75)  
+      plot(1:num.measurements,data.sub$DO.meas, type="p",pch=21, col="grey60",cex=1.25, ylim=c(min(DO.mod.means-DO.mod.sd)-0.5,max(DO.mod.means+DO.mod.sd)+0.5), xlab="Timestep", ylab="DO mg/L")
+      points(1:num.measurements,data.sub$DO.smooth,type='l',lwd=2,xlab="Timestep", col="red", cex=0.75)  
+      points(1:num.measurements,DO.mod.means,lwd=1.5, type="l", xlab="Timestep", col="black")  
       points(1:num.measurements,DO.mod.means+DO.mod.sd, type="l", lty=2)
       points(1:num.measurements,DO.mod.means-DO.mod.sd, type="l", lty=2)
-      legend(x="topleft", legend=c("DO meas or smoothed", "DO modelled"), pch=c(1,NA), lty=c(NA,1), col=c("grey60", "black"), cex=0.6, bty='n')
+      legend(x="topleft", legend=c("DO meas", "DO smooth", "DO modelled"), pch=c(1,NA,NA), lty=c(NA,1,1), col=c("grey60","red", "black"), cex=1, bty='n')
       
-      plot(1:num.measurements,tempC,pch=1,xlab="Timestep" , typ='p')
-      plot(1:num.measurements,PAR,pch=1,xlab="Timestep" , typ='p')
+      plot(1:num.measurements,tempC,pch=1,xlab="Timestep" , typ='p', col="grey60")
+      legend(x="topleft", legend=c("TempC meas"), pch=c(1), col=c("grey60"), cex=1, bty='n')
+      
+      plot(1:num.measurements,data.sub$I,pch=1,xlab="Timestep" , typ='p', col="grey60", ylab='PAR')
+      points(1:num.measurements,data.sub$I.smooth,type='l',lwd=2,xlab="Timestep", col="red", cex=0.75)  
+      legend(x="topleft", legend=c("PAR meas", "PAR smooth"), pch=c(1,NA), lty=c(NA,1), col=c("grey60","red"), cex=1, bty='n')
       
       graphics.off()
       

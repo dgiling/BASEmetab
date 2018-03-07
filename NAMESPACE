@@ -2,4 +2,3 @@
 
 export(bayesmetab)
 import(R2jags)
-import(coda)
