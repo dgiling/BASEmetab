@@ -8,7 +8,7 @@ Description: Estimate Single-station Whole-stream Metabolic Rates from Diel Diss
 License: Creative Commons Attribution 3.0 License.
 Encoding: UTF-8
 LazyData: true
-Imports: coda,
+Imports:
     zoo,
     R2jags
 RoxygenNote: 6.0.1
