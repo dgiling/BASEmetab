@@ -31,10 +31,6 @@ bayesmetab (function)
 
 yallakool (dataset)
 
-\
-
-\
-
 
 ## BASEmetab (package)
 
@@ -44,7 +40,6 @@ yallakool (dataset)
 
 The parameter estimation is performed with the JAGS software, which must be separately installed (Plummer 2003; http://mcmc-jags.sourceforge.net/). The model does not require experience with JAGS, but familiarity with metrics of MCMC chain convergence is recommended (see e.g. McCarthy 2007).
 
-\
 
 **Installing BASEmetab:** To install run the following code
 
@@ -64,8 +59,6 @@ The parameter estimation is performed with the JAGS software, which must be sepa
   #load R2jags to connect to JAGS
   library(R2jags)
 ```
-
-\
 
 **Updates**
 The bayesmetab function was previously available (since 2015) as raw R and JAGS code referred to as "BASE" at https://github.com/dgiling/BASE. The version numbers of the now-obsolete raw BASE were continued for the BASEmetab package. Version 3.0 of the BASEmetab package is an implementation of the functionality in the raw code BASE v2.3.
@@ -107,7 +100,6 @@ In addition to this major update, minor changes have been made to the initial va
  
 Finally, JAGS is now used for the estimation instead of OpenBUGS (Lunn et al 2000), to improve analysis speed by computing the three MCMC chains in parallel with R2jags::jags.parallel.
 
-\
 
 **References**
 
@@ -132,11 +124,6 @@ Song, C., W. K. Dodds, M. T. Trentman, J. Ruegg, and F. Ballantyne. 2016. Method
 Van de Bogert, M. C., S. R. Carpenter, J. J. Cole, and M. L. Pace. 2007. Assessing pelagic and benthic metabolism using free water measurements. Limnol. Oceanogr. Methods 5: 145-155.
 
 
-\
-
-\
-
-
 ## bayesmetab 
 
 **Description:** bayesmetab is the main function of the BASEmetab package. This function calls JAGS to perform the single-station stream metabolism analysis. 
@@ -147,8 +134,6 @@ Van de Bogert, M. C., S. R. Carpenter, J. J. Cole, and M. L. Pace. 2007. Assessi
 update.chains = TRUE, extra.iter=1, smooth.DO=0, smooth.PAR=FALSE,
 K.init = 2, K.est = TRUE, K.meas.mean = 0, K.meas.sd = 4, 
 p.est=FALSE, theta.est=FALSE, instant=TRUE)`
-
-\
 
 **Arguments**
 
@@ -170,8 +155,6 @@ p.est	        Logical. Should p be estimated? (default = FALSE)
 theta.est	    Logical. Should theta be estimated? (default = FALSE)
 instant 		  Logical. Should a table of instantaneous rates be written? (default = FALSE)
 ---------     -----------
-
-\
 
 **Details**
 
@@ -196,8 +179,6 @@ A fast Fourier transform can be used to filter out high-frequency fluctuations i
 `K.est` defaults to TRUE, meaning that K is estimated from the model and data with uninformative priors (but realistically bound; 0 $\le$ K$\le$ 40 day^-1^). Alternatively, K can be informed with a measured or inferred mean and uncertainty (e.g. based on SF~6~ injections or stream morphology). In this case, `K.est` should be set to FALSE, and the mean and standard deviation provided to `K.meas.mean` and `K.meas.sd`, respectively. This mean and standard deviation will be used in the normally-distributed prior for *K*.
 
 By default, the function estimates A, R and K (i.e. a 3-parameter model), while the parameters $\theta$ and *p* have fixed values. Alternatively, $\theta$ and/or *p* may also be estimated within narrow, physically realistic bounds (i.e. 4- or 5-parameter model), which may enhance model fit. A 4- or 5- parameter model can be run by switching `p.est` and/or `theta.est` to TRUE.
-
-\
 
 **Return**
 
@@ -274,10 +255,6 @@ Gallegos, C. L., G. M. Ilornberger, and M. G. Kelly. 1977. A model of river bent
 Gelman, A., X.-L. Meng, and H. Stern. 1996. Posterior predictive assessment of model fitness via realized discrepancies. Statistica Sinica 6: 733-807.
 
 Oliver, R. L., and C. J. Merrick. 2006. Partitioning of river metabolism identifies phytoplankton as a major contributor in the regulated Murray River (Australia). Freshwater Biol 51: 1131-1148.
-
-\
-
-\
 
 
 ##Yallakool_example (dataset)
