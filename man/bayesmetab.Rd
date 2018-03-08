@@ -44,7 +44,7 @@ bayesmetab(data.dir, results.dir, interval, n.iter = 20000,
 \item{theta.est}{Logical. Should theta be estimated? (default = FALSE)}
 }
 \value{
-A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit, plots of model fit (see Vignette for details).
+A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit, plots of model fit (see Vignette for details <https://github.com/dgiling/BASEmetab/blob/master/vignettes/BASEmetab.pdf>).
 }
 \description{
 Estimates single-station whole-stream metabolic rates from diel dissolved oxygen (DO) curves (see Grace et al. 2015).

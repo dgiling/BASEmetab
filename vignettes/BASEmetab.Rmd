@@ -1,13 +1,22 @@
 ---
-title: "Package 'BASEmetab'"
-author: "Darren Giling, Ralph Mac Nally, Nick Bond, Michael Grace"
+title: "User guide for package 'BASEmetab'"
+author: "Darren Giling, Ralph Mac Nally, Nick Bond & Michael Grace"
 date: "`r Sys.Date()`"
-output: rmarkdown::pdf_document
+output: 
+  rmarkdown::pdf_document
 vignette: >
-  %\VignetteIndexEntry{Package 'BASEmetab'}
+  %\VignetteIndexEntry{"User guide for package 'BASEmetab'""}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+
+
+**Maintainer:** Darren Giling <darren.giling@idiv.de>
+
+**Version:** 3.0
+
+**Description:** Estimate Single station Whole-stream Metabolic Rates from Diel Dissolved Oxygen (DO) Curves. See Grace et al. (2015) for more details. NOTE: JAGS must be installed prior to use for the package to work.
 
 
 ```{r setup, include = FALSE}
@@ -17,31 +26,24 @@ knitr::opts_chunk$set(
 )
 ```
 
-**Maintainer:** Darren Giling <darren.giling@idiv.de>
+\setcounter{tocdepth}{1}
+\tableofcontents
 
-**Version:** 3.0
+\newpage
 
-**Description:** Estimate Single station Whole-stream Metabolic Rates from Diel Dissolved Oxygen (DO) Curves. See Grace et al. (2015) for more details. NOTE: JAGS must be installed prior to use for the package to work.
+#BASEmetab (package)
 
+##Description
+BASEmetab is a package for the batch analysis of single-station diel dissolved oxygen data to simultaneously estimate primary production, respiration and reaeration rates of streams and rivers. The analysis is run in a Bayesian framework, allowing for prior information to be considered during the estimation of model parameters. The package also contains other useful functions for preparing and processing time-series data from streams and rivers.
 
-## Topics covered
-BASEmetab-package (package)
-
-bayesmetab (function)
-
-yallakool (dataset)
-
-
-## BASEmetab (package)
-
-**Description:** BASEmetab is a package for the batch analysis of single-station diel dissolved oxygen data to simultaneously estimate primary production, respiration and reaeration rates of streams and rivers. The analysis is run in a Bayesian framework, allowing for prior information to be considered during the estimation of model parameters. The package also contains other useful functions for preparing and processing time-series data from streams and rivers.
-
-**Details:** The main function of the BASEmetab package is bayesmetab. This function implements the daytime regression model of Grace et al. (2015) for dissolved oxygen (DO) time series. See Grace et al. (2015) for a background to the subject and a full description of the model, but note the subsequent revisions to the model that are detailed below in 'Updates'. Grace and Imberger (2006) provide a guide to the practical aspects of measuring diel dissolved oxygen and PAR data in streams and rivers, including recommendations on probe drift that must be corrected prior to estimating metabolic rates.
+##Details
+The main function of the BASEmetab package is `bayesmetab`. This function implements the daytime regression model of Grace et al. (2015) for dissolved oxygen (DO) time series. See Grace et al. (2015) for a background to the subject and a full description of the model, but note the subsequent revisions to the model that are detailed below in 'Updates'. Grace and Imberger (2006) provide a guide to the practical aspects of measuring diel dissolved oxygen and PAR data in streams and rivers, including recommendations on probe drift that must be corrected prior to estimating metabolic rates.
 
 The parameter estimation is performed with the JAGS software, which must be separately installed (Plummer 2003; http://mcmc-jags.sourceforge.net/). The model does not require experience with JAGS, but familiarity with metrics of MCMC chain convergence is recommended (see e.g. McCarthy 2007).
 
 
-**Installing BASEmetab:** To install run the following code
+##Installing BASEmetab
+To install run the following code
 
 ```
 # install devtools package
@@ -60,7 +62,7 @@ The parameter estimation is performed with the JAGS software, which must be sepa
   library(R2jags)
 ```
 
-**Updates**
+##Updates
 The bayesmetab function was previously available (since 2015) as raw R and JAGS code referred to as "BASE" at https://github.com/dgiling/BASE. The version numbers of the now-obsolete raw BASE were continued for the BASEmetab package. Version 3.0 of the BASEmetab package is an implementation of the functionality in the raw code BASE v2.3.
 
 The model has been modified since the publication of Grace et al. (2015) and the initial code upload. Importantly, the structure of the underlying dissolved oxygen model was updated following Song et al. (2016). Song et al. (2016) showed that the model implemented by Grace et al. (2015) underestimated metabolic rates in some cases. This was due to two differences in the formulation compared to other aquatic metabolic models (e.g. Hall and Tank 2005; Van de Bogert et al. 2007; Hanson et al. 2008; Holtgrieve et al. 2010). First, Grace et al. (2015) used a 'stepwise' approach to model the change in DO concentration between time t and t+1, rather than modelling concentration directly. Second, the original BASE model used the measured DO concentration ([DO]measured) to estimate oxygen deficiency for reaeration rates instead of the modelled DO concentration ([DO]measured). These inconsistencies were removed in a subsequent version of the raw code (BASE v2.0):
@@ -101,7 +103,7 @@ In addition to this major update, minor changes have been made to the initial va
 Finally, JAGS is now used for the estimation instead of OpenBUGS (Lunn et al 2000), to improve analysis speed by computing the three MCMC chains in parallel with R2jags::jags.parallel.
 
 
-**References**
+##References
 
 Grace, M. R., D. P. Giling, S. Hladyz, V. Caron, R. M. Thompson, and R. Mac Nally. 2015. Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnol. Oceanogr. Methods 13: 103-114.
 
@@ -124,18 +126,21 @@ Song, C., W. K. Dodds, M. T. Trentman, J. Ruegg, and F. Ballantyne. 2016. Method
 Van de Bogert, M. C., S. R. Carpenter, J. J. Cole, and M. L. Pace. 2007. Assessing pelagic and benthic metabolism using free water measurements. Limnol. Oceanogr. Methods 5: 145-155.
 
 
-## bayesmetab 
+\newpage
 
-**Description:** bayesmetab is the main function of the BASEmetab package. This function calls JAGS to perform the single-station stream metabolism analysis. 
+#bayesmetab (function)
 
-**Useage**
+##Description
+bayesmetab is the main function of the BASEmetab package. This function calls JAGS to perform the single-station stream metabolism analysis. 
+
+##Useage
 
 `basemetab(data.dir , results.dir, interval, n.iter=20000, n.burnin=n.iter*0.5, 
 update.chains = TRUE, extra.iter=1, smooth.DO=0, smooth.PAR=FALSE,
 K.init = 2, K.est = TRUE, K.meas.mean = 0, K.meas.sd = 4, 
 p.est=FALSE, theta.est=FALSE, instant=TRUE)`
 
-**Arguments**
+##Arguments
 
 ---------     -----------
 data.dir      relative or absolute path to the folder containing csv input data files to be read. 
@@ -144,7 +149,8 @@ interval 	    Integer. The time interval in seconds (e.g. 600 seconds)
 n.iter 		    Integer. Number of MCMC iterations (default = 20000)
 n.burnin 	    Integer. Number of iterations of MCMC chains to delete
 update.chains Logical. Should the chains automatically update once if not converged? (default = TRUE)
-extra.iter    Numeric. Number of extra iterations to run if chains are not converged, as multiple of n.iter (default = 1 times)
+extra.iter    Numeric. Number of extra iterations to run if chains are not converged, 
+              as multiple of n.iter (default = 1 times)
 smooth.DO 	  Numeric. Proportion of high-frequency fluctuations to filter with fast Fourier transform (default = 0)
 smooth.PAR 	  Logical. Should PAR be smoothed with a moving average? (default = FALSE)
 K.init 	      Numeric. Initial value of chains for K (day^-1^). Reasonable estimate aids convergence. (default value = 2)
@@ -156,31 +162,31 @@ theta.est	    Logical. Should theta be estimated? (default = FALSE)
 instant 		  Logical. Should a table of instantaneous rates be written? (default = FALSE)
 ---------     -----------
 
-**Details**
+##Details
 
-*Required data*
+###Required data
 
 Rates can be estimated for multiple diel time-series in one execution of the function. Each csv file in the 'input' folder may contain one or more full 24-hour time series of DO measurements (5 or 10 minute data intervals are commonly used). Missing timesteps are not allowed; incomplete days will be excluded from analyses (the number of rows must equal number of periods in a day of the specified interval; e.g. 144 rows for 600-second intervals). The csv files must include the column names Date, Time, I, tempC, DO.meas, atmo.pressure and salinity. These are case sensitive. See data 'Yallakool' for example.
 
 The measurement interval must be the same across all days and input files run in any single analysis. There is no necessity to estimate rates over a defined 24-hour window, but the example data uses midnight to midnight by convention. In this case, the first data point should be midnight (00:00) of the day of interest.
 
-*Model iterations*
+###Model iterations
 
 The number of MCMC iterations is set to 20000 iterations with 10000 burn-in, which should be sufficient in most cases. The number of required iterations can be assessed visually and by inspecting the convergence statistics (see Return). If update.chains=TRUE, the chains will be automatically updated once if convergence criteria are not met (no extra burn-in). The number of additional iterations is the number of iterations (`n.iter`) multiplied by extra.iter (default = 1; the same number of iterations again). A larger number of iterations or longer burn-in may aid model convergence in some cases. 
 
 When bayesmetab is run, jags.parallel calls JAGS, which runs in the background (R will pause for some minutes). This may take several minutes per diel cycle depending on the number of iterations. A progress bar is only shown if the chains are updated when unconverged (i.e. when `update.chains=TRUE`), as these additional iterations do not occur in parallel (and so are slower). 
 
-*Optional smoothing*
+###Optional smoothing
 
 A fast Fourier transform can be used to filter out high-frequency fluctuations in DO (Gallegos et al. 1977), potentially enhancing the diel signal of interest. A value of 0.88 was used by Oliver and Merrick (2006). Additionally, smoothing of PAR with a moving average across five time periods can be added with `smooth.PAR = TRUE`. Smoothing is applied to each csv file separately, so it is recommended to only use if your data are continuous periods longer than one day. Smoothing should not be used if the dates within each csv file are not contiguous, as smoothing will then be applied inappropriately across jumps in time.
 
-*Optional customisation of priors and estimated parameters*
+###Optional customisation of priors and estimated parameters
 
 `K.est` defaults to TRUE, meaning that K is estimated from the model and data with uninformative priors (but realistically bound; 0 $\le$ K$\le$ 40 day^-1^). Alternatively, K can be informed with a measured or inferred mean and uncertainty (e.g. based on SF~6~ injections or stream morphology). In this case, `K.est` should be set to FALSE, and the mean and standard deviation provided to `K.meas.mean` and `K.meas.sd`, respectively. This mean and standard deviation will be used in the normally-distributed prior for *K*.
 
 By default, the function estimates A, R and K (i.e. a 3-parameter model), while the parameters $\theta$ and *p* have fixed values. Alternatively, $\theta$ and/or *p* may also be estimated within narrow, physically realistic bounds (i.e. 4- or 5-parameter model), which may enhance model fit. A 4- or 5- parameter model can be run by switching `p.est` and/or `theta.est` to TRUE.
 
-**Return**
+##Return
 
 Dataframe of metabolic results and metrics for model convergence and fit. This dataframe, a table of instantaneous rates and plots for validating model fit and smoothing are also written to the pathway specified by results.dir. 
 
@@ -219,7 +225,7 @@ DIC	                Deviance Information Criterion. Assessment of how well the m
 pD	                Effective number of parameters. Should be positive. Negative pD may indicate the posterior mean is not a good measure of the posterior distribution, and there is likely an issue with the model.
 
 
-*Model validation*
+##Model validation
 
 Metabolic estimates from poor-fitting or unconverged models are unreliable. As a general rule, a validated model meets the requirements that all parameters have converged (all $\hat{R}$ < 1.1) and PPP is between 0.1 and 0.9 (closer to 0.5 is better). Checking the mrl.fraction or visually confirming for lack of consistent over- or underestimation is also strongly recommended (see below). 
 
@@ -227,7 +233,7 @@ In addition to the results dataframe, the function may optionally return a separ
 
 A set  of plots  for each diel cycle is also written as a jpg to the results.dir as an additional validation tool. The first five panels are trace plots for the samples of parameters *A*, *p*, *R*, *K* and $\theta$ Convergence is indicated by the three chains (indicated by red, green and blue) being well mixed (i.e. overlapping) and stationary. When set as fixed values the trace plots for *p* and $\theta$ show a horizontal lines (i.e. no variation in the samples). The other plots are scatter plots of DO (showing measured, smoothed if applicable and the model fit), PAR (measured and smoothed if applicable) and temperature. These plots can be used to visually confirm curve fits and quickly identify any discrepancies in the data or model. Inconsistencies in the data may indicate a violation in the assumptions of the model; the results are only as a good as the underlying data collection. For example, a sharp increase or decrease in temperature or DO may indicate another source of water entered the system, or a lack of diel signal may indicate low biological activity compared to reaeration. 
 
-**Examples**
+##Examples
 
 ```
 ##View example data set
@@ -248,7 +254,7 @@ dir.create(results.dir)}
 results <- bayesmetab(data.dir, results.dir, interval=600)
 ```
 
-**References**
+##References
 
 Gallegos, C. L., G. M. Ilornberger, and M. G. Kelly. 1977. A model of river benthic algal photosynthesis in response to rapid changes in light1. Limnol Oceanogr 22: 226-233.
 
@@ -257,12 +263,15 @@ Gelman, A., X.-L. Meng, and H. Stern. 1996. Posterior predictive assessment of m
 Oliver, R. L., and C. J. Merrick. 2006. Partitioning of river metabolism identifies phytoplankton as a major contributor in the regulated Murray River (Australia). Freshwater Biol 51: 1131-1148.
 
 
-##Yallakool_example (dataset)
 
-**Description**
-An example set of diel curves is provided with the package. These data can be used to familiarize yourself with the model and as a template for data input.
+\newpage
 
-**Useage**
+#Yallakool_example (dataset)
+
+##Description
+An example set of diel curves from Yallakool Creek, New South Wales, Australia. These data can be used to familiarize yourself with the model and as a template for data input.
+
+##Useage
 ```
 data.dir <- system.file("extdata", package = "BASEmetab")
 ex.data <- read.csv(file.path(data.dir, "Yallakool_example.csv"))
@@ -270,7 +279,7 @@ head(ex.data)
 tail(ex.data)
 ```
 
-**Details**
+##Details
 The format for csv/dataframes must contain the case sensitive column names Date, Time, I, tempC, DO.meas, atmo.pressure and salinity, as shown below:
 
 |Date	      |Time	    |I	  |tempC	|DO.meas	|atmo.pressure	|salinity
@@ -295,7 +304,7 @@ atmo.pressure	  Measured atmospheric pressure in atmospheres. Can be constant (i
 salinity	      Water salinity (in ppt). Can be constant (i.e. fill every time interval with same value) or a time-series. Salinity does not play a large role in determining DO saturation in freshwaters; a default of 0 can be used if salinity is low and unknown.
 
 
-**References**
+##References
 
 Giling, D. P. and others 2017. Delving deeper: Metabolic processes in the metalimnion of stratified lakes. Limnology & Oceanography 62: 1288-1306.
 

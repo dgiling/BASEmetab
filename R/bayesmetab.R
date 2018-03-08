@@ -19,7 +19,7 @@
 #' @param theta.est	Logical. Should theta be estimated? (default = FALSE)
 #' @param instant 		Logical. Should a table of instantaneous rates be written? (default = FALSE)
 #'
-#' @return A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit, plots of model fit (see Vignette for details).
+#' @return A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit, plots of model fit (see Vignette for details <https://github.com/dgiling/BASEmetab/blob/master/vignettes/BASEmetab.pdf>).
 #'
 #'@references Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103-114.
 #'
@@ -238,7 +238,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       points(1:num.measurements,DO.mod.means,lwd=1.5, type="l", xlab="Timestep", col="black")  
       points(1:num.measurements,DO.mod.means+DO.mod.sd, type="l", lty=2)
       points(1:num.measurements,DO.mod.means-DO.mod.sd, type="l", lty=2)
-      legend(x="topleft", legend=c("DO meas", "DO smooth", "DO modelled"), pch=c(1,NA,NA), lty=c(NA,1,1), col=c("grey60","red", "black"), cex=0.75, bty='n')
+      legend(x="topleft", legend=c("DO meas", "DO smooth", "DO fit"), pch=c(1,NA,NA), lty=c(NA,1,1), col=c("grey60","red", "black"), cex=0.75, bty='n')
       
       plot(1:num.measurements,tempC,pch=1,xlab="Timestep" , typ='p', col="grey60")
       legend(x="topleft", legend=c("TempC meas"), pch=c(1), col=c("grey60"), cex=0.75, bty='n')
