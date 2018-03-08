@@ -6,7 +6,7 @@ Code accompanying Grace et al. (2015) Fast processing of diel oxygen curves: est
 
 Currently the BASEmetab package contains just a single user function `bayesmetab`, which performs the above analysis.
 
-Run `?bayesmetab` for details.
+See vignette and run `?bayesmetab` for details.
 
 Installation
 ============
