@@ -19,7 +19,7 @@
 #' @param theta.est	Logical. Should theta be estimated? (default = FALSE)
 #' @param instant 		Logical. Should a table of instantaneous rates be written? (default = FALSE)
 #'
-#' @return A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit, plots of model fit (see Vignette for details <https://github.com/dgiling/BASEmetab/blob/master/vignettes/BASEmetab.pdf>).
+#' @return A dataframe and csv file of parameter estimates (mean, SD) and checks of model fit, plots of model fit (see Vignette for details https://github.com/dgiling/BASEmetab/blob/master/vignettes/BASEmetab.pdf).
 #'
 #'@references Grace et al. (2015) Fast processing of diel oxygen curves: estimating stream metabolism with BASE (BAyesian Single-station Estimation). Limnology and Oceanography: Methods, 13, 103-114.
 #'
