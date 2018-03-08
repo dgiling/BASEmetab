@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.6.11)  8 MAR 2018 13:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.6.11)  8 MAR 2018 16:15
 entering extended mode
 **./BASEmetab.tex
 (BASEmetab.tex
@@ -1128,25 +1128,31 @@ Overfull \hbox (2.09357pt too wide) in alignment at lines 352--353
  [] [] 
  []
 
-[5] [6] [7] [8] [9]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 689.
-[10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 689.
+[5] [6] [7] <Yallakool_example_01-12-11.jpg, id=88, 1204.5pt x 1204.5pt>
+File: Yallakool_example_01-12-11.jpg Graphic file (type jpg)
+<use Yallakool_example_01-12-11.jpg>
+Package pdftex.def Info: Yallakool_example_01-12-11.jpg used on input line 567.
+
+(pdftex.def)             Requested size: 469.75311pt x 469.75311pt.
+[8] [9 <./Yallakool_example_01-12-11.jpg>] [10]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 704.
+[11]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 704.
 (BASEmetab.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 689.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 689.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 704.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 704.
 Package rerunfilecheck Info: File `BASEmetab.out' has not changed.
 (rerunfilecheck)             Checksum: C6B6DFFE9080938C3306A07C496FF9FF;501.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 689.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 704.
  ) 
 Here is how much of TeX's memory you used:
- 12587 strings out of 493319
- 185029 string characters out of 3128534
- 289919 words of memory out of 3000000
- 15831 multiletter control sequences out of 15000+200000
- 53220 words of font info for 80 fonts, out of 3000000 for 9000
+ 12603 strings out of 493319
+ 185292 string characters out of 3128534
+ 289923 words of memory out of 3000000
+ 15837 multiletter control sequences out of 15000+200000
+ 53646 words of font info for 84 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 32i,7n,38p,329b,434s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 32i,7n,38p,698b,434s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/dg45koti/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts
 1.enc}{C:/Users/dg45koti/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/l
 m-ec.enc}{C:/Users/dg45koti/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/l
@@ -1167,9 +1173,9 @@ lmri12.pfb><C:/Users/dg45koti/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pub
 lic/lm/lmsy10.pfb><C:/Users/dg45koti/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
 pe1/public/lm/lmsy7.pfb><C:/Users/dg45koti/AppData/Local/Programs/MiKTeX 2.9/fo
 nts/type1/public/lm/lmtt10.pfb>
-Output written on BASEmetab.pdf (10 pages, 264581 bytes).
+Output written on BASEmetab.pdf (11 pages, 817061 bytes).
 PDF statistics:
- 170 PDF objects out of 1000 (max. 8388607)
- 43 named destinations out of 1000 (max. 500000)
- 10265 words of extra memory for PDF output out of 12000 (max. 10000000)
+ 176 PDF objects out of 1000 (max. 8388607)
+ 45 named destinations out of 1000 (max. 500000)
+ 10270 words of extra memory for PDF output out of 12000 (max. 10000000)
 
