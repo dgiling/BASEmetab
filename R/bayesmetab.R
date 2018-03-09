@@ -81,12 +81,18 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
     
     data<-read.csv(file.path(data.dir,fname), head=T) # read next file
     seconds<-86400
+    req.rows <- 86400/interval
     N = nrow(data)
     x = 0:(N-1)
 
-    # check dates for "/" and replace with "-"
-    data$Date <- gsub("/", "-", data$Date)
-    
+    ## checks
+      # check headers
+      if (! all(colnames(data) %in% c("Date","Time","I", "tempC", "DO.meas", "atmo.pressure", "salinity"))) {
+          stop(paste0("Column headers in input file '", fname, "' do not include 'Date', 'Time', 'I', 'tempC', 'DO.meas', 'atmo.pressure' and 'salinity' (they are case sensitive)")) }
+  
+      # check dates for "/" and replace with "-"
+      data$Date <- gsub("/", "-", data$Date)
+        
     ## Smoothing data
     if(smooth.DO > 0) {
       # fast Fourier transform smoothing - low pass filter
@@ -107,6 +113,10 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
     data$Date <- factor(data$Date, levels = unique(data$Date))
     dates <- unique(data$Date)
     n.records <- tapply(data$Date, INDEX=data$Date, FUN=length)
+    incomp.dates <- dates[n.records != (seconds/interval)]
+    if(length(incomp.dates)>0) {
+      warning(paste0("Not all dates in file '", fname, "' contain ", req.rows, " rows"))
+    }
     dates <- dates[n.records == (seconds/interval)] # select only dates with full days
     
     ## Analyse days sequentially
