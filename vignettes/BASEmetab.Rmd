@@ -203,6 +203,10 @@ GPP.mean	          Estimated mean rate of gross primary production (mg O~2~ L^-1
 GPP.sd		          Standard deviation of estimated GPP (mg O~2~ L^-1^ day^-1^)
 ER.mean	            Estimated mean rate of ecosystem respiration (mg O~2~ L^-1^ day^-1^)
 ER.sd		            Standard deviation of estimated ER (mg O~2~ L^-1^ day^-1^)
+NEP.mean	          Estimated mean rate of net ecosystem production (mg O~2~ L^-1^ day^-1^)
+NEP.sd		          Standard deviation of estimated NEP (mg O~2~ L^-1^ day^-1^)
+PR.mean             Estimated mean P:R ratio
+PR.sd               Standard deviation of estimated P:R
 K.mean		          Estimated mean reaeration (K) rate (day^-1^)
 K.sd		            Standard deviation of estimated reaeration (K) rate (day^-1^)
 theta.mean	        Mean value of $\theta$ (equals 1.07177 if `theta.est=FASLE`)
@@ -244,6 +248,13 @@ DIC	                Deviance Information Criterion. Assessment of how well the m
 pD	                Effective number of parameters. Should be positive. Negative pD may indicate the
                     posterior mean is not a good measure of the posterior distribution, and there is
                     likely an issue with the model.
+totDailyLight       Sum of PAR
+aveDailyTemp        Mean water temperature
+interval            Analysis metadata. Specified measurement interval (seconds)
+smooth.DO           Analysis metadata. Specified degree of smoothing for DO (numeric)
+smooth.PAR          Analysis metadata. Specified smoothing of PAR (logical)
+n.iter              Analysis metadata. Specified number of iterations.
+n.burnin            Analysis metadata. Specified burnin of burnin iterations.
 
 
 ##Model validation

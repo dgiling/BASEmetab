@@ -72,10 +72,9 @@
               for (i in 1:(num.measurements-1))
               {		
                 # estimating primary production
-                gppts[i] <- Aprime*pow(PAR[i],pprime) # Grace et al 2015
-                # gppts[i] <- PAR[i] / (P1 + P2*PAR[i]) # alternate parameterisation
-                
-                DO.meas[i+1] ~ dnorm(DO.modelled[i+1], tau)
+                gppts[i] <- Aprime*pow(PAR[i],pprime) 
+               
+		DO.meas[i+1] ~ dnorm(DO.modelled[i+1], tau)
                 DO.modelled[i+1] <- DO.modelled[i] 
                 + A * pow(PAR[i],p)                                       			  
                 - R * (pow(theta,(tempC[i]-temp.ave)))
@@ -101,6 +100,7 @@
               ER <- R * (seconds/interval)
               GPP <- sum(gppts[])
               NEP <- GPP - ER
+	      PR <- GPP / ER
               K.day <- K * (seconds/interval)
               
           }

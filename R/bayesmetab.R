@@ -66,10 +66,11 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
   
   # Set up output tables
   output.table<-NULL
-  output.table<-data.frame(File=character(), Date=character(), GPP.mean=double(), GPP.sd=double(), ER.mean=double(), ER.sd=double(), 
+  output.table<-data.frame(File=character(), Date=character(), GPP.mean=double(), GPP.sd=double(), ER.mean=double(), ER.sd=double(), NEP.mean=double(), NEP.sd=double(), PR.mean=double(), PR.sd=double(),
                            K.mean=double(), K.sd=double(), theta.mean=double(), theta.sd=double(), A.mean=double(), A.sd=double(), p.mean=double(), p.sd=double(), 
                            R2=double(), PPP=double(), rmse=double(), rmse.relative=double(), mrl.fraction=double(), ER.K.cor=double(), convergence.check=double(), A.Rhat=double(),
-                           K.Rhat=double(), theta.Rhat=double(), p.Rhat=double(), R.Rhat=double(), GPP.Rhat=double(), DIC=double(), pD=double(), 
+                           K.Rhat=double(), theta.Rhat=double(), p.Rhat=double(), R.Rhat=double(), GPP.Rhat=double(), DIC=double(), pD=double(),
+                           totDailyLight=double(), aveDailyTemp=double(), interval= double(), smooth.DO=double() , smooth.PAR=logical(), n.iter= double(), n.burnin= double(),
                            stringsAsFactors=FALSE)
   instant.rates<-data.frame(File=character(), Date=character(), interval=integer(), 
                             tempC=double(), I=double(), K.instant=double(), GPP.instant=double(), ER.instant=double(),
@@ -154,13 +155,12 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
                         "K.est.n", "K.meas.mean.ts", "K.meas.sd.ts", "p.est.n", "theta.est.n")  
       
       # Define monitoring variables
-      params=c("A","R","K","K.day","p","theta","tau","ER","GPP", "NEP","sum.obs.resid","sum.ppa.resid","PPfit","DO.modelled")
+      params=c("A","R","K","K.day","p","theta","tau","ER","GPP","NEP","PR","sum.obs.resid","sum.ppa.resid","PPfit","DO.modelled")
       
       ## Call jags ##
       
       # Set debug = T below to inspect each file for model convergence 
       # (inspect the main parameters for convergence using bgr diagrams, history, density and autocorrelation)
-      # n.iter=1000; n.burnin=500
       metabfit=NULL
       metabfit <- do.call(R2jags::jags.parallel,
                           list(data=data.list, inits=inits, parameters.to.save=params, model.file = file.path(system.file(package="BASEmetab"), "BASE_metab_model_v2.3.txt"),
@@ -217,13 +217,16 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       ER.K.cor <- cor(metabfit$BUGSoutput$sims.list$ER,metabfit$BUGSoutput$sims.list$K) # plot(metabfit$sims.list$ER ~ metabfit$sims.list$K)
       
       # insert results to table and write table
-      result <- data.frame(File=as.character(fname), Date=as.character(d), metabfit$BUGSoutput$mean$GPP, metabfit$BUGSoutput$sd$GPP, metabfit$BUGSoutput$mean$ER, metabfit$BUGSoutput$sd$ER, metabfit$BUGSoutput$mean$K.day, 
-                           metabfit$BUGSoutput$sd$K.day,  metabfit$BUGSoutput$mean$theta, metabfit$BUGSoutput$sd$theta, metabfit$BUGSoutput$mean$A, metabfit$BUGSoutput$sd$A, metabfit$BUGSoutput$mean$p, metabfit$BUGSoutput$sd$p, 
+      result <- data.frame(File=as.character(fname), Date=as.character(d), metabfit$BUGSoutput$mean$GPP, metabfit$BUGSoutput$sd$GPP, metabfit$BUGSoutput$mean$ER, metabfit$BUGSoutput$sd$ER,
+                           metabfit$BUGSoutput$mean$NEP, metabfit$BUGSoutput$sd$NEP, metabfit$BUGSoutput$mean$PR, metabfit$BUGSoutput$sd$PR,
+                           metabfit$BUGSoutput$mean$K.day, metabfit$BUGSoutput$sd$K.day,  metabfit$BUGSoutput$mean$theta, metabfit$BUGSoutput$sd$theta, metabfit$BUGSoutput$mean$A, 
+                           metabfit$BUGSoutput$sd$A, metabfit$BUGSoutput$mean$p, metabfit$BUGSoutput$sd$p, 
                            R2, PPP, rmse, rmse.relative, mrl.fraction, ER.K.cor, Rhat.test, metabfit$BUGSoutput$summary["A",8] , metabfit$BUGSoutput$summary["K",8], 
                            metabfit$BUGSoutput$summary["theta",8], metabfit$BUGSoutput$summary["p",8], metabfit$BUGSoutput$summary["R",8], metabfit$BUGSoutput$summary["GPP",8],  DIC, pD,
+                           totDailyLight=sum(PAR), aveDailyTemp=mean(tempC),
+                           interval= interval, smooth.DO=smooth.DO , smooth.PAR=smooth.PAR, n.iter= n.iter, n.burnin= n.burnin,
                            stringsAsFactors = FALSE)
       output.table[nrow(output.table)+1,] <- result
-      write.csv(output.table, file=file.path(results.dir, "BASE_results.csv")) # output file overwritten at each iteration
       
       # insert results to instantaneous table and write
       if(instant == TRUE) {
@@ -234,7 +237,6 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
                                      ER.instant=as.vector(metabfit$BUGSoutput$mean$R) * as.vector(metabfit$BUGSoutput$mean$theta)^(tempC-mean(tempC)),
                                      stringsAsFactors = FALSE)
         instant.rates[(nrow(instant.rates)+1):(nrow(instant.rates)+(seconds/interval)),] <- instant.result
-        write.csv(instant.rates, file=file.path(results.dir, "instantaneous_rates.csv")) # output file name
       }
       
       # diagnostic multi-panel plot
@@ -260,6 +262,11 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       graphics.off()
       
     }
+  }
+  
+  write.csv(output.table, file=file.path(results.dir, gsub(":","",paste0("BASE_results_",Sys.time(),".csv")))) # write output file
+  if(instant == TRUE) {
+    write.csv(instant.rates, file=file.path(results.dir, gsub(":","",paste0("instantaneous_rates_",Sys.time(),".csv")))) # write output file
   }
   
   end.time<-NULL; end.time<-Sys.time()
