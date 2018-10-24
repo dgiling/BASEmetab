@@ -171,7 +171,7 @@ instant 		  Logical. Should a table of instantaneous rates be written? (default 
 
 Rates can be estimated for multiple diel time-series in one execution of the function. Each csv file in the 'input' folder may contain one or more full 24-hour time series of DO measurements (5 or 10 minute data intervals are commonly used). Missing timesteps are not allowed; incomplete days will be excluded from analyses (the number of rows must equal number of periods in a day of the specified interval; e.g. 144 rows for 600-second intervals). The csv files must include the column names Date, Time, I, tempC, DO.meas, atmo.pressure and salinity. These are case sensitive. See data 'Yallakool' for example.
 
-The measurement interval must be the same across all days and input files run in any single analysis. There is no necessity to estimate rates over a defined 24-hour window, but the example data uses midnight to midnight by convention. In this case, the first data point should be midnight (00:00) of the day of interest.
+The measurement interval must be the same across all days and input files run in any single analysis. Data should be arranged so that the first point of each day is midnight.
 
 ###Model iterations
 

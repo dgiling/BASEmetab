@@ -56,9 +56,9 @@
               
               temp.ave <- mean(tempC[])
               
-              Aprime <- A # no cut in jags
-              pprime <- p # no cut in jags
-              gppts[num.measurements] <- 0 #updated
+              #Aprime <- A # no cut in jags
+              #pprime <- p # no cut in jags
+              #gppts[num.measurements] <- 0 #updated
               
               # for posterior predictive assessment and goodness of fit evaluation
               obs.resid[num.measurements] <- 0
@@ -72,7 +72,7 @@
               for (i in 1:(num.measurements-1))
               {		
                 # estimating primary production
-                gppts[i] <- Aprime*pow(PAR[i],pprime) 
+                # gppts[i] <- Aprime*pow(PAR[i],pprime) 
                
 		DO.meas[i+1] ~ dnorm(DO.modelled[i+1], tau)
                 DO.modelled[i+1] <- DO.modelled[i] 
@@ -103,6 +103,13 @@
 	      PR <- GPP / ER
               K.day <- K * (seconds/interval)
               
+	      for (i in 1:num.measurements)
+              {
+		kpts[i] <- K * pow(1.0241,(tempC[i]-temp.ave))	 
+		gppts[i] <- A * pow(PAR[i],p) 
+		erpts[i] <- R * (pow(theta,(tempC[i]-temp.ave)))
+	      }
+
           }
           
 

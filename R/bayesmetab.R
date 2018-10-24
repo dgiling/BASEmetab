@@ -155,7 +155,8 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
                         "K.est.n", "K.meas.mean.ts", "K.meas.sd.ts", "p.est.n", "theta.est.n")  
       
       # Define monitoring variables
-      params=c("A","R","K","K.day","p","theta","tau","ER","GPP","NEP","PR","sum.obs.resid","sum.ppa.resid","PPfit","DO.modelled")
+      params=c("A","R","K","K.day","p","theta","tau","ER","GPP","NEP","PR","sum.obs.resid","sum.ppa.resid","PPfit","DO.modelled",
+               "gppts", "erpts", "kpts")
       
       ## Call jags ##
       
@@ -232,9 +233,9 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       if(instant == TRUE) {
         instant.result <- data.frame(File=as.character(rep(fname,seconds/interval)), Date=as.character(rep(d,seconds/interval)),interval=1:(seconds/interval),
                                      tempC=tempC, I=PAR, 
-                                     K.instant=as.vector(metabfit$BUGSoutput$mean$K) * 1.0241^(tempC-mean(tempC)),
-                                     GPP.instant=as.vector(metabfit$BUGSoutput$mean$A) * PAR^as.vector(metabfit$BUGSoutput$mean$p),
-                                     ER.instant=as.vector(metabfit$BUGSoutput$mean$R) * as.vector(metabfit$BUGSoutput$mean$theta)^(tempC-mean(tempC)),
+                                     K.instant=as.vector(metabfit$BUGSoutput$mean$kpts),
+                                     GPP.instant=as.vector(metabfit$BUGSoutput$mean$gppts),
+                                     ER.instant=as.vector(metabfit$BUGSoutput$mean$erpts),
                                      stringsAsFactors = FALSE)
         instant.rates[(nrow(instant.rates)+1):(nrow(instant.rates)+(seconds/interval)),] <- instant.result
       }
