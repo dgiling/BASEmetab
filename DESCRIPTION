@@ -11,7 +11,8 @@ LazyData: true
 Imports:
     coda,
     zoo,
-    R2jags
+    R2jags,
+    lattice	
 RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown

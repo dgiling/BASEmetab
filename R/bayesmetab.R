@@ -66,11 +66,20 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
   
   # Set up output tables
   output.table<-NULL
-  output.table<-data.frame(File=character(), Date=character(), GPP.mean=double(), GPP.sd=double(), ER.mean=double(), ER.sd=double(), NEP.mean=double(), NEP.sd=double(), PR.mean=double(), PR.sd=double(),
-                           K.mean=double(), K.sd=double(), theta.mean=double(), theta.sd=double(), A.mean=double(), A.sd=double(), p.mean=double(), p.sd=double(), 
-                           R2=double(), PPP=double(), rmse=double(), rmse.relative=double(), mrl.fraction=double(), ER.K.cor=double(), convergence.check=double(), A.Rhat=double(),
-                           K.Rhat=double(), theta.Rhat=double(), p.Rhat=double(), R.Rhat=double(), GPP.Rhat=double(), DIC=double(), pD=double(),
-                           totDailyLight=double(), aveDailyTemp=double(), interval= double(), smooth.DO=double() , smooth.PAR=logical(), n.iter= double(), n.burnin= double(),
+  output.table<-data.frame(File=character(), Date=character(), 
+                           GPP.mean=double(), GPP.sd=double(), GPP.median=double(),
+                           ER.mean=double(), ER.sd=double(), ER.median=double(), 
+                           NEP.mean=double(), NEP.sd=double(), NEP.median=double(), 
+                           PR.mean=double(), PR.sd=double(), PR.median=double(),
+                           K.mean=double(), K.sd=double(), K.median=double(),
+                           theta.mean=double(), theta.sd=double(), theta.median=double(),
+                           A.mean=double(), A.sd=double(), A.median=double(), 
+                           p.mean=double(), p.sd=double(), p.median=double(),
+                           R2=double(), PPP=double(), rmse=double(), rmse.relative=double(), mrl.fraction=double(), ER.K.cor=double(), 
+                           convergence.check=double(), A.Rhat=double(), K.Rhat=double(), theta.Rhat=double(), p.Rhat=double(), R.Rhat=double(), GPP.Rhat=double(), 
+                           DIC=double(), pD=double(),
+                           totDailyLight=double(), aveDailyTemp=double(), 
+                           interval= double(), smooth.DO=double() , smooth.PAR=logical(), n.iter= double(), n.burnin= double(),
                            stringsAsFactors=FALSE)
   instant.rates<-data.frame(File=character(), Date=character(), interval=integer(), 
                             tempC=double(), I=double(), K.instant=double(), GPP.instant=double(), ER.instant=double(),
@@ -218,12 +227,19 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       ER.K.cor <- cor(metabfit$BUGSoutput$sims.list$ER,metabfit$BUGSoutput$sims.list$K) # plot(metabfit$sims.list$ER ~ metabfit$sims.list$K)
       
       # insert results to table and write table
-      result <- data.frame(File=as.character(fname), Date=as.character(d), metabfit$BUGSoutput$mean$GPP, metabfit$BUGSoutput$sd$GPP, metabfit$BUGSoutput$mean$ER, metabfit$BUGSoutput$sd$ER,
-                           metabfit$BUGSoutput$mean$NEP, metabfit$BUGSoutput$sd$NEP, metabfit$BUGSoutput$mean$PR, metabfit$BUGSoutput$sd$PR,
-                           metabfit$BUGSoutput$mean$K.day, metabfit$BUGSoutput$sd$K.day,  metabfit$BUGSoutput$mean$theta, metabfit$BUGSoutput$sd$theta, metabfit$BUGSoutput$mean$A, 
-                           metabfit$BUGSoutput$sd$A, metabfit$BUGSoutput$mean$p, metabfit$BUGSoutput$sd$p, 
-                           R2, PPP, rmse, rmse.relative, mrl.fraction, ER.K.cor, Rhat.test, metabfit$BUGSoutput$summary["A",8] , metabfit$BUGSoutput$summary["K",8], 
-                           metabfit$BUGSoutput$summary["theta",8], metabfit$BUGSoutput$summary["p",8], metabfit$BUGSoutput$summary["R",8], metabfit$BUGSoutput$summary["GPP",8],  DIC, pD,
+      result <- data.frame(File=as.character(fname), Date=as.character(d), 
+                           metabfit$BUGSoutput$mean$GPP, metabfit$BUGSoutput$sd$GPP, metabfit$BUGSoutput$median$GPP,
+                           metabfit$BUGSoutput$mean$ER, metabfit$BUGSoutput$sd$ER, metabfit$BUGSoutput$median$ER,
+                           metabfit$BUGSoutput$mean$NEP, metabfit$BUGSoutput$sd$NEP, metabfit$BUGSoutput$median$NEP, 
+                           metabfit$BUGSoutput$mean$PR, metabfit$BUGSoutput$sd$PR, metabfit$BUGSoutput$median$PR,
+                           metabfit$BUGSoutput$mean$K.day, metabfit$BUGSoutput$sd$K.day, metabfit$BUGSoutput$median$K.day,  
+                           metabfit$BUGSoutput$mean$theta, metabfit$BUGSoutput$sd$theta, metabfit$BUGSoutput$median$theta, 
+                           metabfit$BUGSoutput$mean$A, metabfit$BUGSoutput$sd$A, metabfit$BUGSoutput$median$A,
+                           metabfit$BUGSoutput$mean$p, metabfit$BUGSoutput$sd$p, metabfit$BUGSoutput$median$p,
+                           R2, PPP, rmse, rmse.relative, mrl.fraction, ER.K.cor, 
+                           Rhat.test, metabfit$BUGSoutput$summary["A",8] , metabfit$BUGSoutput$summary["K",8], metabfit$BUGSoutput$summary["theta",8], 
+                           metabfit$BUGSoutput$summary["p",8], metabfit$BUGSoutput$summary["R",8], metabfit$BUGSoutput$summary["GPP",8],  
+                           DIC, pD,
                            totDailyLight=sum(PAR), aveDailyTemp=mean(tempC),
                            interval= interval, smooth.DO=smooth.DO , smooth.PAR=smooth.PAR, n.iter= n.iter, n.burnin= n.burnin,
                            stringsAsFactors = FALSE)
@@ -240,8 +256,8 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
         instant.rates[(nrow(instant.rates)+1):(nrow(instant.rates)+(seconds/interval)),] <- instant.result
       }
       
-      # diagnostic multi-panel plot
-      jpeg(file=file.path(results.dir, paste0(substr(fname, 1,(nchar(fname)-4)),"_", as.character(d), ".jpg")), width=1200, height=1200, pointsize=30, quality=300)
+      # diagnostic traceplots and scatterplots
+      jpeg(file=file.path(results.dir, paste0(substr(fname, 1,(nchar(fname)-4)),"_", as.character(d), "_1_trace_", gsub(":","",Sys.time()), ".jpg")), width=1200, height=1200, pointsize=30, quality=300)
       
       par(mfrow=c(3,3), mar=c(3,4,2,1), oma=c(0.1,0.1,0.1,0.1))
       traceplot(metabfit, varname=c('A','p','R','K.day','theta'), ask=FALSE, mfrow=c(3,3), new=FALSE)
@@ -260,6 +276,13 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       if(smooth.PAR==TRUE) { points(1:num.measurements,data.sub$I.smooth,type='l',lwd=2,xlab="Timestep", col="red", cex=0.75)  }
       legend(x="topleft", legend=c("PAR meas", "PAR smooth"), pch=c(1,NA), lty=c(NA,1), col=c("grey60","red"), cex=0.75, bty='n')
       
+      graphics.off()
+      
+      # diagnostic density plots
+      jpeg(file=file.path(results.dir, paste0(substr(fname, 1,(nchar(fname)-4)),"_", as.character(d), "_2_density_", gsub(":","",Sys.time()), ".jpg")), width=1200, height=1200, pointsize=30, quality=300)
+
+      print(densityplot(metabfit.mcmc[,c("theta", "K.day", "p", "A", "ER", "GPP")]))
+
       graphics.off()
       
     }
