@@ -201,7 +201,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       
       # autocorr test
       metabfit.mcmc<-coda::as.mcmc(metabfit)
-      ac.lag1 <- autocorr.diag(metabfit.mcmc, lags = 1)
+      ac.lag1 <- coda::autocorr.diag(metabfit.mcmc, lags = 1)
       auto.corr.test <- NULL
       auto.corr.test <- ifelse(any(abs(ac.lag1)>0.1, na.rm=T)==TRUE,"Check ac", "ac OK")
       
@@ -281,7 +281,7 @@ bayesmetab <- function(data.dir, results.dir, interval, n.iter=20000, n.burnin=n
       # diagnostic density plots
       jpeg(file=file.path(results.dir, paste0(substr(fname, 1,(nchar(fname)-4)),"_", as.character(d), "_2_density_", gsub(":","",Sys.time()), ".jpg")), width=1200, height=1200, pointsize=30, quality=300)
 
-      print(densityplot(metabfit.mcmc[,c("theta", "K.day", "p", "A", "ER", "GPP")]))
+      print(lattice::densityplot(metabfit.mcmc[,c("theta", "K.day", "p", "A", "ER", "GPP")]))
 
       graphics.off()
       
