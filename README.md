@@ -37,4 +37,4 @@ See the help file associated with `bayesmetab`.
 Developer
 =========
 
-Technical code prepared by Darren Giling <darren.giling@idiv.de> Packaged by Nick Bond <n.bond@latrobe.edu.au>
+Technical code prepared by Darren Giling <darren.giling@canberra.edu.au> Packaged by Nick Bond <n.bond@latrobe.edu.au>
