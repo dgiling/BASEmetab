@@ -12,7 +12,8 @@ See vignette and run `?bayesmetab` for details.
 Installation
 ============
 
-To install run the following code:
+The parameter estimation is performed with the JAGS software, which must be separately installed (Plummer
+2003; http://mcmc-jags.sourceforge.net/). To install the BASEmetab package run the following code:
 
       # install devtools package
       install.packages(c("devtools"))
